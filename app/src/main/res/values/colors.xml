@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Core Brand Colors -->
+    <color name="colorPrimary">#FF9800</color> <!-- Orange 500 -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <color name="colorPrimaryContainer">#FFB74D</color>
+    <color name="colorOnPrimaryContainer">#000000</color>
+
+    <color name="colorSecondary">#FFA726</color>
+    <color name="colorOnSecondary">#000000</color>
+
+    <color name="colorSecondaryContainer">#FFE0B2</color>
+    <color name="colorOnSecondaryContainer">#000000</color>
+
+    <color name="colorTertiary">#FFCC80</color>
+    <color name="colorOnTertiary">#000000</color>
+
+    <color name="colorTertiaryContainer">#FFE0B2</color>
+    <color name="colorOnTertiaryContainer">#000000</color>
+
+    <!-- Neutral / Surface Colors -->
+    <color name="colorBackground">#FFF8E1</color>
+    <color name="colorOnBackground">#000000</color>
+
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#000000</color>
+
+    <color name="colorSurfaceVariant">#FFE0B2</color>
+    <color name="colorOnSurfaceVariant">#5D4037</color>
+
+    <color name="colorOutline">#BCAAA4</color>
+    <color name="colorOutlineVariant">#D7CCC8</color>
+
+    <color name="colorError">#D32F2F</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorErrorContainer">#FFCDD2</color>
+    <color name="colorOnErrorContainer">#000000</color>
+
+    <!-- Shadows and Tints -->
+    <color name="colorSurfaceTint">#FF9800</color>
+</resources>
