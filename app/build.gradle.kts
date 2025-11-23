@@ -66,6 +66,8 @@ dependencies {
     // 🖼 Glide (for weather icons)
     implementation("com.github.bumptech.glide:glide:5.0.5")
 
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
