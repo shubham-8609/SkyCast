@@ -8,6 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class MainViewModel : ViewModel() {
+
+      var stored: Pair<Double, Double>? = null
+
+
     // create repository internally to keep activity/ViewModel wiring simple
     private val weatherRepo = WeatherRepository(RetrofitClient.instance)
 

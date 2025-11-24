@@ -6,4 +6,18 @@
     <string name="weather_icon_desc">weather icon</string>
     <string name="location_not_set">Location not set. Requesting location...</string>
     <string name="permission_denied">Permission Denied</string>
+
+    <!-- Dashboard strings -->
+    <string name="temperature_placeholder">--°</string>
+    <string name="weather_status_placeholder">Haze</string>
+    <string name="location_placeholder">City, Country</string>
+
+    <string name="humidity_label">Humidity</string>
+    <string name="humidity_value">52%</string>
+
+    <string name="pressure_label">Pressure</string>
+    <string name="pressure_value">1015 hPa</string>
+
+    <string name="wind_label">Wind</string>
+    <string name="wind_value">1.5 m/s</string>
 </resources>

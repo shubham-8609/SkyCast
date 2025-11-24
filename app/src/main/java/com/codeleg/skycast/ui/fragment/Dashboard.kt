@@ -1,60 +1,115 @@
 package com.codeleg.skycast.ui.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.codeleg.skycast.R
+import com.codeleg.skycast.data.model.WeatherResponse
+import com.codeleg.skycast.databinding.FragmentDashboardBinding
+import com.codeleg.skycast.ui.viewModel.MainViewModel
+import kotlinx.coroutines.launch
+import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Dashboard.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Dashboard : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentDashboardBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val mainViewModel: MainViewModel by activityViewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnRefresh.setOnClickListener { fetchWeather() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+    private fun fetchWeather() {
+        lifecycleScope.launch {
+            try {
+                val stored = mainViewModel.stored
+                if (stored != null) {
+                    val (lat, lon) = stored
+
+                    // show loading state
+                    binding.btnRefresh.isEnabled = false
+                    binding.btnRefresh.text = "Refreshing..."
+
+                    val weather = mainViewModel.fetchWeather(lat, lon)
+
+                    // update UI
+                    binding.tvTemperature.text = String.format(Locale.getDefault(), "%.1f°", weather.main.temp)
+                    val condition = weather.weather.firstOrNull()?.description ?: "-"
+                    binding.tvLocation.text = "${weather.name}, ${weather.sys.country}"
+                    binding.tvHumidity.text = "${weather.main.humidity}%"
+                    binding.tvPressure.text = "${weather.main.pressure} hPa"
+                    binding.tvWind.text = "${weather.wind.speed} m/s"
+                    updateIndicators(weather)
+
+                    // load icon from OpenWeatherMap
+                    val icon = weather.weather.firstOrNull()?.icon ?: "50d"
+                    val iconUrl = "https://openweathermap.org/img/wn/${icon}@4x.png"
+                    Glide.with(requireContext())
+                        .load(iconUrl)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .into(binding.ivWeatherIcon)
+
+                    // restore button
+                    binding.btnRefresh.isEnabled = true
+                    binding.btnRefresh.text = getString(R.string.refresh)
+
+                    Log.d("codeleg" , weather.toString())
+                    return@launch
+                } else {
+                    Toast.makeText(requireContext(), "Location not set.", Toast.LENGTH_SHORT).show()
+
+                }
+            } catch (e: Exception) {
+                binding.btnRefresh.isEnabled = true
+                binding.btnRefresh.text = getString(R.string.refresh)
+                Toast.makeText(requireContext(), "Failed to fetch weather: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+    private fun updateIndicators(weather: WeatherResponse) {
+
+        // Humidity
+        val humidity = weather.main.humidity
+        binding.progressHumidity.setProgress(humidity, true)
+
+        // Wind Speed
+        val windSpeed = weather.wind.speed
+        val kmh = windSpeed * 3.6
+        val windPercent = ((kmh / 20f) * 100).toInt().coerceIn(0, 100)
+
+        binding.progressWind.setProgress(windPercent, true)
+
+        // Pressure
+        val pressure = weather.main.pressure
+        val pressurePercent = ((pressure - 950f) / 100f * 100).toInt().coerceIn(0, 100)
+
+        binding.progressPressure.setProgress(pressurePercent, true)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Dashboard.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Dashboard().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

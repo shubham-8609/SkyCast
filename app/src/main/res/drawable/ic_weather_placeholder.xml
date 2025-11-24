@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Outer circle (sun) approximated with cubic bezier curves -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M12,2 C16.4183,2 20,5.5817 20,10 C20,14.4183 16.4183,18 12,18 C7.5817,18 4,14.4183 4,10 C4,5.5817 7.5817,2 12,2 Z" />
+
+    <!-- Simple rays (4 small rect-like shapes) -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M12 0 L13 3 L11 3 Z" />
+
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M12 21 L13 24 L11 24 Z" />
+
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M0 12 L3 13 L3 11 Z" />
+
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M21 12 L24 13 L24 11 Z" />
+
+</vector>
