@@ -5,16 +5,14 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import java.util.Locale
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import androidx.lifecycle.lifecycleScope
 import com.codeleg.skycast.R
 import com.codeleg.skycast.data.local.PrefManager
 import com.codeleg.skycast.databinding.ActivityMainBinding
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                 val saved = PrefManager.getLocation(application)
                 if(saved != null){
                     viewModel.stored = saved
-                    Toast.makeText(this@MainActivity , "Using saved lat: ${viewModel.stored!!.first} , Lon : ${viewModel.stored!!.second}" , Toast.LENGTH_SHORT).show()
+                    Log.d("codeleg" , "Using saved lat: ${viewModel.stored!!.first} , Lon : ${viewModel.stored!!.second}")
                     return@launch
                 }
             }
@@ -107,11 +105,7 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
-                    Toast.makeText(
-                        this,
-                        "Lat: ${location.latitude}, Lon: ${location.longitude}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Log.d("codeleg" , "Got location from lastLocation : Lat: ${location.latitude}, Lon: ${location.longitude}")
                     lifecycleScope.launch {
                         PrefManager.setLocation(application, location.latitude, location.longitude)
                         viewModel.stored = location.latitude to location.longitude
@@ -124,18 +118,14 @@ class MainActivity : AppCompatActivity() {
                     )
                         .addOnSuccessListener { loc ->
                             if (loc != null) {
-                                Toast.makeText(
-                                    this,
-                                    "Lat: ${loc.latitude}, Lon: ${loc.longitude}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+
+                                Log.d("codeleg" , "Got location from getCurrentLocation : Lat: ${loc.latitude}, Lon: ${loc.longitude}")
                                 lifecycleScope.launch {
                                     PrefManager.setLocation(application , loc.latitude , loc.longitude)
                                     viewModel.stored = loc.latitude to loc.longitude
                                 }
                             } else {
-                                Toast.makeText(this, "Location unavailable", Toast.LENGTH_SHORT)
-                                    .show()
+                                Log.d("codeleg" , "Location unavailable from getCurrentLocation")
                             }
                         }
                         .addOnFailureListener {

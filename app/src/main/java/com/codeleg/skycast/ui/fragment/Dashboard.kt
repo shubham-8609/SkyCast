@@ -63,6 +63,7 @@ class Dashboard : Fragment() {
                     binding.tvLocation.text = "${weather.name}, ${weather.sys.country}"
                     binding.tvHumidity.text = "${weather.main.humidity}%"
                     binding.tvPressure.text = "${weather.main.pressure} hPa"
+                    binding.tvWeatherStatus.text = "${weather.weather.firstOrNull()?.main}"
                     binding.tvWind.text = "${weather.wind.speed} m/s"
                     updateIndicators(weather)
 
